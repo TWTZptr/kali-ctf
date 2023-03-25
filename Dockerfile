@@ -1,6 +1,12 @@
 # Pull last Kali version
 FROM kalilinux/kali-rolling
 
+# Set user password by default
+ARG USER_PASSWORD="root"
+
+# Set sshd port by default
+ARG SSHD_PORT=10122
+
 # Configure WSL2 for X11 Forwarding
 ENV DISPLAY=:0
 ENV WAYLAND_DISPLAY=wayland-0
@@ -9,6 +15,9 @@ ENV XDG_RUNTIME_DIR=/tmp/runtime-dir
 
 # Create workspace directory
 WORKDIR /workspace
+
+# Change user password to $USER_PASSWORD
+RUN echo "root:$USER_PASSWORD" | chpasswd
 
 # Install ZSH
 RUN apt update && apt install -y zsh
@@ -22,6 +31,7 @@ RUN apt install -y \
   curl \
   dirsearch \
   fcrackzip \
+  gdb \
   gdbserver \
   git \
   hashcat \
@@ -32,6 +42,7 @@ RUN apt install -y \
   netcat-traditional \
   nikto \
   nmap \
+  openssh-server \
   python3 \
   python3-pip \
   rlwrap \
@@ -60,5 +71,18 @@ RUN cd /tmp \
   && chmod +x cheat-linux-amd64 \
   && mv cheat-linux-amd64 /usr/local/bin/cheat
 
+# Configure sshd
+RUN mkdir /run/sshd \
+  && sed -i 's/#Port 22/Port 10122/' /etc/ssh/sshd_config \
+  && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
+  && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
+  && sed -i 's/UsePAM yes/#UsePAM yes/' /etc/ssh/sshd_config
+
+# Open $SSHD_PORT port for connection
+EXPOSE $SSHD_PORT
+
+# Copy entrypoint.sh to /bin/entrypoint.sh
+COPY entrypoint.sh /bin/entrypoint.sh
+
 # Run container
-ENTRYPOINT [ "/bin/sh", "-c" ]
+ENTRYPOINT [ "/bin/entrypoint.sh" ]

@@ -4,7 +4,7 @@ This repository contains the [Kali Linux](https://en.wikipedia.org/wiki/Kali_Lin
 
 # TL;DR
 ```bash
-docker exec -ti ctf "/bin/zsh" 2>nul || docker start ctf >nul 2>&1 && docker attach ctf 2>nul || docker build --pull --tag kali-ctf "https://raw.githubusercontent.com/Niapollab/kali-ctf/master/Dockerfile" && docker run --privileged -ti --name ctf kali-ctf "/bin/zsh" 2>nul
+docker exec -ti ctf "/bin/zsh" 2>nul || docker start ctf >nul 2>&1 && docker attach ctf 2>nul || docker build --pull --tag kali-ctf . && docker run --privileged -ti --name ctf -p 10122:10122 kali-ctf "/bin/zsh" 2>nul
 ```
 
 
@@ -27,13 +27,13 @@ winget install --disable-interactivity alpine
 
 ## With GUI support
 ```bash
-docker create --privileged -ti --name ctf --mount "type=bind,src=\\wsl.localhost\Alpine\mnt\wslg,dst=/tmp" kali-ctf "/bin/zsh"
+docker create --privileged -ti --name ctf -p 10122:10122 --mount "type=bind,src=\\wsl.localhost\Alpine\mnt\wslg,dst=/tmp" kali-ctf "/bin/zsh"
 ```
 
 
 ## Without GUI support
 ```bash
-docker create --privileged -ti --name ctf kali-ctf "/bin/zsh"
+docker create --privileged -ti --name ctf -p 10122:10122 kali-ctf "/bin/zsh"
 ```
 
 
