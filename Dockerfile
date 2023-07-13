@@ -54,16 +54,6 @@ RUN apt install -y \
 # Symlink python3 to python
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Install [volatility3](https://github.com/volatilityfoundation/volatility3)
-RUN cd /tmp \
-  && git clone https://github.com/volatilityfoundation/volatility3 \
-  && chmod +x volatility3/vol.py \
-  && mv volatility3 /opt \
-  && ln -s /opt/volatility3/vol.py /usr/bin/vol.py \
-  && ln -s /opt/volatility3/vol.py /usr/bin/volatility \
-  && apt install -y python3 python3-dev libpython3-dev python3-pip python3-setuptools python3-wheel \
-  && pip install -r /opt/volatility3/requirements.txt
-
 # Install [Cheat](https://github.com/cheat/cheat/blob/master/INSTALLING.md)
 RUN cd /tmp \
   && wget https://github.com/cheat/cheat/releases/download/4.4.0/cheat-linux-amd64.gz \
