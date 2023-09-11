@@ -42,6 +42,9 @@ RUN apt install -y \
   # Reverse
   gdb \
   gdbserver \
+  strace \
+  ltrace \
+  checksec \
   # Web
   wget \
   curl \
