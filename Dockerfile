@@ -27,29 +27,35 @@ RUN chsh -s /bin/zsh
 
 # Install required packages
 RUN apt install -y \
-  binwalk \
-  curl \
-  dirsearch \
-  fcrackzip \
-  gdb \
-  gdbserver \
+  # Common
   git \
-  hashcat \
-  inetutils-ping \
-  less \
-  man \
-  nano \
-  netcat-traditional \
-  nikto \
-  nmap \
+  vim \
+  ssh \
   openssh-server \
+  nano \
+  man \
+  less \
+  rlwrap \
+  # Programming
   python3 \
   python3-pip \
-  rlwrap \
+  # Reverse
+  gdb \
+  gdbserver \
+  # Web
+  wget \
+  curl \
+  dirsearch \
+  inetutils-ping \
+  netcat-traditional \
   sqlmap \
-  ssh \
-  vim \
-  wget
+  nikto \
+  nmap \
+  # Forensic
+  binwalk \
+  # Crypto
+  hashcat \
+  fcrackzip
 
 # Symlink python3 to python
 RUN ln -s /usr/bin/python3 /usr/bin/python
