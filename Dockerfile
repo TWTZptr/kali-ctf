@@ -70,6 +70,9 @@ RUN cd /tmp \
   && chmod +x cheat-linux-amd64 \
   && mv cheat-linux-amd64 /usr/local/bin/cheat
 
+# Install [GDB dashboard](https://github.com/cyrus-and/gdb-dashboard)
+RUN wget -P ~ https://git.io/.gdbinit
+
 # Configure sshd
 RUN mkdir /run/sshd \
   && sed -i 's/#Port 22/Port 10122/' /etc/ssh/sshd_config \
