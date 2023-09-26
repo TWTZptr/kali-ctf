@@ -1,0 +1,5 @@
+# Common
+pwntools
+
+# Steganography
+Pillow

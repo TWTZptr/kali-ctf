@@ -35,15 +35,16 @@ RUN mkdir /run/sshd \
 # Open $SSHD_PORT port for connection
 EXPOSE $SSHD_PORT
 
-# Copy *.sh to /bin directory
-COPY *.sh /bin
+# Copy *.sh and requirements.txt to /bin directory
+COPY entrypoint.sh /bin/entrypoint.sh
+COPY *requirements* /tmp
 
 # Install requirements
-RUN sed -e 's/sudo //g' /bin/install_requirements.sh > /bin/install_requirements_no_sudo.sh \
-  && cat /bin/install_requirements_no_sudo.sh \
-  && chmod +x /bin/install_requirements_no_sudo.sh \
-  && /bin/install_requirements_no_sudo.sh \
-  && rm -rf /bin/install_requirements*.sh
+RUN sed -e 's/sudo //g' /tmp/install_requirements.sh > /tmp/install_requirements_no_sudo.sh \
+  && cat /tmp/install_requirements_no_sudo.sh \
+  && chmod +x /tmp/install_requirements_no_sudo.sh \
+  && /tmp/install_requirements_no_sudo.sh \
+  && rm -rf /tmp/*
 
 # Run container
 ENTRYPOINT [ "/bin/entrypoint.sh" ]

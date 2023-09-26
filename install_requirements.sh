@@ -58,5 +58,8 @@ cd /tmp \
 # Install [GDB dashboard](https://github.com/cyrus-and/gdb-dashboard)
 wget -P ~ https://git.io/.gdbinit
 
+# Install python packages
+pip --no-cache-dir install --root-user-action=ignore --ignore-requires-python -r /tmp/requirements.txt
+
 # Clean cache
 sudo rm -rf /var/cache/apt/archives /var/lib/apt/lists
