@@ -19,59 +19,11 @@ WORKDIR /workspace
 # Change user password to $USER_PASSWORD
 RUN echo "root:$USER_PASSWORD" | chpasswd
 
-# Install ZSH
-RUN apt update && apt install -y zsh
+# Install ZSH and openssh-server
+RUN apt update && apt install -y zsh openssh-server
 
 # Set ZSH as default shell
 RUN chsh -s /bin/zsh
-
-# Install required packages
-RUN apt install -y \
-  # Common
-  git \
-  vim \
-  ssh \
-  openssh-server \
-  nano \
-  man \
-  less \
-  rlwrap \
-  # Programming
-  python3 \
-  python3-pip \
-  # Reverse
-  gdb \
-  gdbserver \
-  strace \
-  ltrace \
-  checksec \
-  # Web
-  wget \
-  curl \
-  dirsearch \
-  inetutils-ping \
-  netcat-traditional \
-  sqlmap \
-  nikto \
-  nmap \
-  # Forensic
-  binwalk \
-  # Crypto
-  hashcat \
-  fcrackzip
-
-# Symlink python3 to python
-RUN ln -s /usr/bin/python3 /usr/bin/python
-
-# Install [Cheat](https://github.com/cheat/cheat/blob/master/INSTALLING.md)
-RUN cd /tmp \
-  && wget https://github.com/cheat/cheat/releases/download/4.4.0/cheat-linux-amd64.gz \
-  && gunzip cheat-linux-amd64.gz \
-  && chmod +x cheat-linux-amd64 \
-  && mv cheat-linux-amd64 /usr/local/bin/cheat
-
-# Install [GDB dashboard](https://github.com/cyrus-and/gdb-dashboard)
-RUN wget -P ~ https://git.io/.gdbinit
 
 # Configure sshd
 RUN mkdir /run/sshd \
@@ -83,8 +35,15 @@ RUN mkdir /run/sshd \
 # Open $SSHD_PORT port for connection
 EXPOSE $SSHD_PORT
 
-# Copy entrypoint.sh to /bin/entrypoint.sh
-COPY entrypoint.sh /bin/entrypoint.sh
+# Copy *.sh to /bin directory
+COPY *.sh /bin
+
+# Install requirements
+RUN sed -e 's/sudo //g' /bin/install_requirements.sh > /bin/install_requirements_no_sudo.sh \
+  && cat /bin/install_requirements_no_sudo.sh \
+  && chmod +x /bin/install_requirements_no_sudo.sh \
+  && /bin/install_requirements_no_sudo.sh \
+  && rm -rf /bin/install_requirements*.sh
 
 # Run container
 ENTRYPOINT [ "/bin/entrypoint.sh" ]
