@@ -22,7 +22,7 @@ sudo apt install -y \
 
 # Install reverse packages from repos
 sudo apt install -y \
-    gdb \
+    gdb-multiarch \
     gdbserver \
     strace \
     ltrace \
