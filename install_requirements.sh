@@ -24,6 +24,7 @@ sudo apt install -y \
 sudo apt install -y \
     gdb-multiarch \
     gdbserver \
+    edb-debugger \
     strace \
     ltrace \
     checksec
