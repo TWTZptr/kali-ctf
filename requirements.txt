@@ -3,3 +3,6 @@ pwntools
 
 # Steganography
 Pillow
+
+# Reverse
+gdb-tools
