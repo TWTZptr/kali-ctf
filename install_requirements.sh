@@ -29,6 +29,10 @@ sudo apt install -y \
     ltrace \
     checksec
 
+# Install pwn packages from repos
+sudo apt install -y \
+    ropper
+
 # Install web packages from repos
 sudo apt install -y \
     wget \
