@@ -2,6 +2,12 @@
 This repository contains the [Kali Linux](https://en.wikipedia.org/wiki/Kali_Linux) build for [Capture the Flag](https://en.wikipedia.org/wiki/Capture_the_flag_(cybersecurity))
 
 
+# TL;DR
+```bash
+docker exec -ti ctf "/bin/zsh" 2>nul || docker start ctf >nul 2>&1 && docker attach ctf 2>nul || docker run --privileged -ti --name ctf -p 10122:10122 ghcr.io/niapollab/kali-ctf:master "/bin/zsh"
+```
+
+
 # Build Image
 ```bash
 docker build --pull --tag kali-ctf .
