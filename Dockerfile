@@ -47,4 +47,5 @@ RUN sed -e 's/sudo //g' /tmp/install_requirements.sh > /tmp/install_requirements
   && rm -rf /tmp/*
 
 # Run container
+RUN chmod ug+x /bin/entrypoint.sh
 ENTRYPOINT [ "/bin/entrypoint.sh" ]
