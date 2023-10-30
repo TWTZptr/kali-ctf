@@ -13,7 +13,8 @@ sudo apt install -y \
     nano \
     man \
     less \
-    rlwrap
+    rlwrap \
+    net-tools
 
 # Install programming packages from repos
 sudo apt install -y \
