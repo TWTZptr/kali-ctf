@@ -46,6 +46,14 @@ RUN sed -e 's/sudo //g' /tmp/install_requirements.sh > /tmp/install_requirements
   && /tmp/install_requirements_no_sudo.sh \
   && rm -rf /tmp/*
 
+# Install libssl1.1
+RUN curl http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb -o /tmp/temp.deb \
+  && dpkg --install /tmp/temp.deb \ 
+  && rm -rf /tmp/temp.deb
+
+# Install ZeroTier
+RUN curl https://install.zerotier.com/ | bash || true
+
 # Run container
 RUN chmod ug+x /bin/entrypoint.sh
 ENTRYPOINT [ "/bin/entrypoint.sh" ]
