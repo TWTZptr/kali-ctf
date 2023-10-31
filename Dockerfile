@@ -41,18 +41,24 @@ COPY *requirements* /tmp
 
 # Install requirements
 RUN sed -e 's/sudo //g' /tmp/install_requirements.sh > /tmp/install_requirements_no_sudo.sh \
-  && cat /tmp/install_requirements_no_sudo.sh \
   && chmod +x /tmp/install_requirements_no_sudo.sh \
   && /tmp/install_requirements_no_sudo.sh \
   && rm -rf /tmp/*
 
 # Install libssl1.1
 RUN curl http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb -o /tmp/temp.deb \
-  && dpkg --install /tmp/temp.deb \ 
+  && dpkg --install /tmp/temp.deb \
   && rm -rf /tmp/temp.deb
 
 # Install ZeroTier
 RUN curl https://install.zerotier.com/ | bash || true
+
+# Add ZeroTier volume with identity and nodes configurations
+RUN mkdir -p /var/lib/zerotier/networks.d \
+  && chown zerotier-one: /var/lib/zerotier/networks.d \
+  && ln -dsf /var/lib/zerotier/networks.d /var/lib/zerotier-one/networks.d \
+  && ln -sf /var/lib/zerotier/identity.public /var/lib/zerotier-one/identity.public \
+  && ln -sf /var/lib/zerotier/identity.secret /var/lib/zerotier-one/identity.secret
 
 # Run container
 RUN chmod ug+x /bin/entrypoint.sh

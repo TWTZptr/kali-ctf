@@ -4,13 +4,19 @@ This repository contains the [Kali Linux](https://en.wikipedia.org/wiki/Kali_Lin
 
 # TL;DR
 ```bash
-docker exec -ti ctf "/bin/zsh" 2>nul || docker start ctf >nul 2>&1 && docker attach ctf 2>nul || docker run --privileged -ti --name ctf -p 10122:10122 ghcr.io/niapollab/kali-ctf:master "/bin/zsh"
+docker volume create kali-ctf >nul 2>&1 & docker exec -ti ctf "/bin/zsh" 2>nul || docker start ctf >nul 2>&1 && docker attach ctf 2>nul || docker run --privileged -ti --name ctf -v kali-ctf:/var/lib/zerotier/ -p 10122:10122 ghcr.io/niapollab/kali-ctf:master "/bin/zsh"
 ```
 
 
 # Build Image
 ```bash
 docker build --pull --tag kali-ctf .
+```
+
+
+# Build Volume
+```bash
+docker volume create kali-ctf
 ```
 
 
@@ -27,13 +33,21 @@ winget install --disable-interactivity alpine
 
 ## With GUI support
 ```bash
-docker create --privileged -ti --name ctf -p 10122:10122 --mount "type=bind,src=\\wsl.localhost\Alpine\mnt\wslg,dst=/tmp" kali-ctf "/bin/zsh"
+docker create --privileged -ti --name ctf -v kali-ctf:/var/lib/zerotier/ -p 10122:10122 --mount "type=bind,src=\\wsl.localhost\Alpine\mnt\wslg,dst=/tmp" kali-ctf "/bin/zsh"
 ```
 
 
 ## Without GUI support
 ```bash
-docker create --privileged -ti --name ctf -p 10122:10122 kali-ctf "/bin/zsh"
+docker create --privileged -ti --name ctf -v kali-ctf:/var/lib/zerotier/ -p 10122:10122 kali-ctf "/bin/zsh"
+```
+
+
+# Configure container
+## Register your own ZeroTier identity
+If you want to use your own local network through ZeroTier register identity. It's need for saving identity context through docker containers:
+```bash
+mkdir -p /var/lib/zerotier && zerotier-one -i generate /var/lib/zerotier/identity.secret /var/lib/zerotier/identity.public && chown zerotier-one:zerotier-one /var/lib/zerotier/*
 ```
 
 
