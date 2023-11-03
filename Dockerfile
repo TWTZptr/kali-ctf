@@ -60,6 +60,15 @@ RUN mkdir -p /var/lib/zerotier/networks.d \
   && ln -sf /var/lib/zerotier/identity.public /var/lib/zerotier-one/identity.public \
   && ln -sf /var/lib/zerotier/identity.secret /var/lib/zerotier-one/identity.secret
 
+# Install and setup samba
+RUN apt install -y samba
+RUN rm /etc/samba/smb.conf \ 
+  && echo '[workspace]\n \
+    path = /workspace\n \
+    browseable = yes\n \
+    read only = no\n' > /etc/samba/smb.conf \
+  && echo "${USER_PASSWORD}\n${USER_PASSWORD}" | smbpasswd -a root
+
 # Run container
 RUN chmod ug+x /bin/entrypoint.sh
 ENTRYPOINT [ "/bin/entrypoint.sh" ]
