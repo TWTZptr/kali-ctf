@@ -61,8 +61,7 @@ RUN mkdir -p /var/lib/zerotier/networks.d \
   && ln -sf /var/lib/zerotier/identity.secret /var/lib/zerotier-one/identity.secret
 
 # Install and setup samba
-RUN apt install -y samba
-RUN rm /etc/samba/smb.conf \ 
+RUN apt install -y samba \
   && echo '[workspace]\n \
     path = /workspace\n \
     browseable = yes\n \

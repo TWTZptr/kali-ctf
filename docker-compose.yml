@@ -1,0 +1,17 @@
+services:
+  ctf:
+    container_name: ctf
+    image: kali-ctf
+    stdin_open: true
+    tty: true
+    privileged: true
+    ports:
+      - 10122:10122
+    build: .
+    volumes:
+      - kali-ctf:/var/lib/zerotier
+    command: /bin/zsh
+
+volumes:
+  kali-ctf:
+    name: kali-ctf
