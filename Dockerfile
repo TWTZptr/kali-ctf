@@ -19,8 +19,8 @@ WORKDIR /workspace
 # Change user password to $USER_PASSWORD
 RUN echo "root:$USER_PASSWORD" | chpasswd
 
-# Install ZSH and openssh-server
-RUN apt update && apt install -y zsh openssh-server
+# Install ZSH, openssh-server, samba and cifs-utils
+RUN apt update && apt install -y zsh openssh-server samba cifs-utils
 
 # Set ZSH as default shell
 RUN chsh -s /bin/zsh
@@ -60,9 +60,8 @@ RUN mkdir -p /var/lib/zerotier/networks.d \
   && ln -sf /var/lib/zerotier/identity.public /var/lib/zerotier-one/identity.public \
   && ln -sf /var/lib/zerotier/identity.secret /var/lib/zerotier-one/identity.secret
 
-# Install and setup samba
-RUN apt install -y samba \
-  && echo '[workspace]\n \
+# Configure samba
+RUN echo '[workspace]\n \
     path = /workspace\n \
     browseable = yes\n \
     read only = no\n' > /etc/samba/smb.conf \
