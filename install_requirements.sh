@@ -14,7 +14,8 @@ sudo apt install -y \
     man \
     less \
     rlwrap \
-    net-tools
+    net-tools \
+    openvpn
 
 # Install programming packages from repos
 sudo apt install -y \
@@ -28,7 +29,8 @@ sudo apt install -y \
     edb-debugger \
     strace \
     ltrace \
-    checksec
+    checksec \
+    qemu-system
 
 # Install pwn packages from repos
 sudo apt install -y \
