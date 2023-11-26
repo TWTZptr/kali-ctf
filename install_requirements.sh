@@ -63,8 +63,8 @@ cd /tmp \
     && sudo chmod +x cheat-linux-amd64 \
     && sudo mv cheat-linux-amd64 /usr/local/bin/cheat
 
-# Install [GDB dashboard](https://github.com/cyrus-and/gdb-dashboard)
-wget -P ~ https://git.io/.gdbinit
+# Install [GEF](https://github.com/hugsy/gef)
+bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
 
 # Install python packages
 pip --no-cache-dir install --root-user-action=ignore --ignore-requires-python -r /tmp/requirements.txt
