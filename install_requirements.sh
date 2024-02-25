@@ -49,7 +49,8 @@ sudo apt install -y \
 
 # Install forensic packages from repos
 sudo apt install -y \
-    binwalk
+    binwalk \
+    wordlists
 
 # Install crypto packages from repos
 sudo apt install -y \
