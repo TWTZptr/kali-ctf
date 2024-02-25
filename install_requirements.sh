@@ -56,6 +56,10 @@ sudo apt install -y \
     hashcat \
     fcrackzip
 
+# Install stego packages from repos
+sudo apt install -y \
+    stegseek
+
 # Install [Cheat](https://github.com/cheat/cheat/blob/master/INSTALLING.md)
 cd /tmp \
     && wget https://github.com/cheat/cheat/releases/download/4.4.0/cheat-linux-amd64.gz \
