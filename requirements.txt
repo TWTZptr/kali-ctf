@@ -6,4 +6,3 @@ Pillow
 
 # Reverse
 gdb-tools
-pcode2code

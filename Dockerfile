@@ -7,12 +7,6 @@ ARG USER_PASSWORD="root"
 # Set sshd port by default
 ARG SSHD_PORT=10122
 
-# Configure WSL2 for X11 Forwarding
-ENV DISPLAY=:0
-ENV WAYLAND_DISPLAY=wayland-0
-ENV PULSE_SERVER=unix:/tmp/PulseServer
-ENV XDG_RUNTIME_DIR=/tmp/runtime-dir
-
 # Create workspace directory
 WORKDIR /workspace
 
@@ -20,20 +14,10 @@ WORKDIR /workspace
 RUN echo "root:$USER_PASSWORD" | chpasswd
 
 # Install ZSH, openssh-server, samba and cifs-utils
-RUN apt update && apt install -y zsh openssh-server samba cifs-utils
+RUN apt update && apt install -y zsh cifs-utils
 
 # Set ZSH as default shell
 RUN chsh -s /bin/zsh
-
-# Configure sshd
-RUN mkdir /run/sshd \
-  && sed -i 's/#Port 22/Port 10122/' /etc/ssh/sshd_config \
-  && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
-  && sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config \
-  && sed -i 's/UsePAM yes/#UsePAM yes/' /etc/ssh/sshd_config
-
-# Open $SSHD_PORT port for connection
-EXPOSE $SSHD_PORT
 
 # Copy *.sh and requirements.txt to /bin directory
 COPY entrypoint.sh /bin/entrypoint.sh
@@ -50,23 +34,5 @@ RUN curl http://archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1
   && dpkg --install /tmp/temp.deb \
   && rm -rf /tmp/temp.deb
 
-# Install ZeroTier
-RUN curl https://install.zerotier.com/ | bash || true
-
-# Add ZeroTier volume with identity and nodes configurations
-RUN mkdir -p /var/lib/zerotier/networks.d \
-  && chown zerotier-one: /var/lib/zerotier/networks.d \
-  && ln -dsf /var/lib/zerotier/networks.d /var/lib/zerotier-one/networks.d \
-  && ln -sf /var/lib/zerotier/identity.public /var/lib/zerotier-one/identity.public \
-  && ln -sf /var/lib/zerotier/identity.secret /var/lib/zerotier-one/identity.secret
-
-# Configure samba
-RUN echo '[workspace]\n \
-    path = /workspace\n \
-    browseable = yes\n \
-    read only = no\n' > /etc/samba/smb.conf \
-  && echo "${USER_PASSWORD}\n${USER_PASSWORD}" | smbpasswd -a root
-
-# Run container
 RUN chmod ug+x /bin/entrypoint.sh
 ENTRYPOINT [ "/bin/entrypoint.sh" ]

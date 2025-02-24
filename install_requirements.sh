@@ -14,8 +14,7 @@ sudo apt install -y \
     man \
     less \
     rlwrap \
-    net-tools \
-    openvpn
+    net-tools
 
 # Install programming packages from repos
 sudo apt install -y \
@@ -29,8 +28,7 @@ sudo apt install -y \
     edb-debugger \
     strace \
     ltrace \
-    checksec \
-    qemu-system
+    checksec
 
 # Install pwn packages from repos
 sudo apt install -y \
@@ -60,16 +58,6 @@ sudo apt install -y \
 # Install stego packages from repos
 sudo apt install -y \
     stegseek
-
-# Install [Cheat](https://github.com/cheat/cheat/blob/master/INSTALLING.md)
-cd /tmp \
-    && wget https://github.com/cheat/cheat/releases/download/4.4.0/cheat-linux-amd64.gz \
-    && gunzip cheat-linux-amd64.gz \
-    && sudo chmod +x cheat-linux-amd64 \
-    && sudo mv cheat-linux-amd64 /usr/local/bin/cheat
-
-# Install [GEF](https://github.com/hugsy/gef)
-bash -c "$(curl -fsSL https://gef.blah.cat/sh)"
 
 # Install python packages
 pip --no-cache-dir install --root-user-action=ignore --ignore-requires-python -r /tmp/requirements.txt
